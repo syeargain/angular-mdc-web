@@ -1,14 +1,14 @@
-import { NgModule } from '@angular/core';
+// import { NgModule } from '@angular/core';
 
-import {
-  SelectComponent,
-  SelectedText,
-} from './select.component';
+// import {
+//   SelectComponent,
+//   SelectedText,
+// } from './select.component';
 
-@NgModule({
-  exports: [SelectComponent],
-  declarations: [SelectComponent],
-})
-export class SelectModule { }
+// @NgModule({
+//   exports: [SelectComponent],
+//   declarations: [SelectComponent],
+// })
+// export class SelectModule { }
 
-export * from './select.component';
+// export * from './select.component';
