@@ -1,14 +1,23 @@
-// import { NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 
-// import {
-//   SelectComponent,
-//   SelectedText,
-// } from './select.component';
+import {
+  MdcSelect,
+  MdcSelectContainer,
+  MdcSelectedItem,
+  MdcSelectItem,
+} from './select.component';
 
-// @NgModule({
-//   exports: [SelectComponent],
-//   declarations: [SelectComponent],
-// })
-// export class SelectModule { }
+export const SELECT_COMPONENTS = [
+  MdcSelect,
+  MdcSelectContainer,
+  MdcSelectedItem,
+  MdcSelectItem,
+];
 
-// export * from './select.component';
+@NgModule({
+  exports: [SELECT_COMPONENTS],
+  declarations: [SELECT_COMPONENTS],
+})
+export class MdcSelectModule { }
+
+export * from './select.component';

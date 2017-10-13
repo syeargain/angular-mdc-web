@@ -21,6 +21,7 @@ import {
   MdcTextfieldModule,
   MdcThemeModule,
   MdcToolbarModule,
+  MdcSelectModule,
   MdcRippleModule,
 // } from '@angular-mdc/web';
 } from '../lib/public_api';
@@ -48,6 +49,7 @@ import {
     MdcTextfieldModule,
     MdcThemeModule,
     MdcToolbarModule,
+    MdcSelectModule,
     MdcRippleModule,
   ]
 })

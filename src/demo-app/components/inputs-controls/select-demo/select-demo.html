@@ -1,0 +1,82 @@
+<div fxLayout="column" fxLayoutAlign="start start" class="mdc-padding">
+  <h1 mdc-typography-display1>Select Menus</h1>
+  <div mdc-typography-subheading2>MDC Select provides Material Design single-option and multi-option select menus.</div>
+  <div class="info-banner" mdc-typography-subheading1>
+    <![CDATA[import { MdcSelectModule } from '@angular-mdc/web';]]>
+  </div>
+  <div class="docs-api">
+    <table>
+      <thead>
+        <tr>
+          <th>Component</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>mdc-select</td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr>
+          <th>Properties</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>id: string</td>
+          <td>Unique Id of the select (auto generated if not supplied).</td>
+        </tr>
+        <tr>
+          <td>name: string</td>
+          <td>Name of the select.</td>
+        </tr>
+        <tr>
+          <td>placeholder: string</td>
+          <td>Placeholder to be shown if no value has been selected.</td>
+        </tr>
+        <tr>
+          <td>value: string</td>
+          <td>Value of the checkbox.</td>
+        </tr>
+        <tr>
+          <td>tabIndex: number</td>
+          <td>Set the underlying tab index of the select. (Default is 0)</td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr>
+          <th>Methods</th>
+          <th>Parameters</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>focus()</td>
+          <td>Sets focus to the select component.</td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr>
+          <th>Events</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            change(index: number, value: string)
+          </td>
+          <td>Event dispatched on value change.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <span mdc-typography-headline>Select Menu</span>
+  <mdc-select [placeholder]="'Favorite food'">
+    <mdc-select-item>Hamburger</mdc-select-item>
+    <mdc-select-item>Pizza</mdc-select-item>
+    <mdc-select-item>Tacos</mdc-select-item>
+  </mdc-select>
+</div>

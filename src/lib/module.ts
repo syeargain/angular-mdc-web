@@ -13,6 +13,7 @@ import { MdcLinearProgressModule } from './linear-progress/index';
 import { MdcListModule } from './list/index';
 import { MdcMenuModule } from './menu/index';
 import { MdcRadioModule } from './radio/index';
+import { MdcSelectModule } from './select/index';
 import { MdcSliderModule } from './slider/index';
 import { MdcSnackbarModule } from './snackbar/index';
 import { MdcSwitchModule } from './switch/index';
@@ -35,6 +36,7 @@ const MATERIAL_MODULES = [
   MdcListModule,
   MdcMenuModule,
   MdcRadioModule,
+  MdcSelectModule,
   MdcSliderModule,
   MdcSnackbarModule,
   MdcSwitchModule,
