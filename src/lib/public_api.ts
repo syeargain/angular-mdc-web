@@ -20,7 +20,6 @@ export * from './snackbar/index';
 export * from './switch/index';
 export * from './tabs/index';
 export * from './textfield/index';
-export * from './theme/index';
 export * from './toolbar/index';
 
 export * from './cdk/overlay/index';
