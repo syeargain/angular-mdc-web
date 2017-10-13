@@ -1,4 +1,4 @@
-@import "../material-components-web/checkbox/variables";
+@import "../../material-components-web/checkbox/variables";
 
 .mdc-list-item {
   &__start-detail.mdc-checkbox {
@@ -8,4 +8,8 @@
   &__end-detail.mdc-checkbox {
     height: $mdc-checkbox-size;
   }
+}
+
+.mdc-list--border {
+  border: 1px solid rgba(0, 0, 0, .1);
 }
