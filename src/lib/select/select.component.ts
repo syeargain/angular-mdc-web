@@ -1,25 +1,26 @@
 import {
   AfterViewInit,
   Component,
-  ContentChild,
-  Directive,
   ContentChildren,
-  EventEmitter,
+  Directive,
   ElementRef,
+  EventEmitter,
+  forwardRef,
   HostBinding,
   Input,
-  forwardRef,
-  Provider,
-  Output,
   OnDestroy,
-  ViewChild,
+  Output,
+  Provider,
   QueryList,
   Renderer2,
+  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { toBoolean, isBrowser } from '../common';
 import { EventRegistry } from '../common/event-registry';
+
+import { MDCSimpleMenu } from '@material/menu/simple';
 
 import { MDCSelectAdapter } from './adapter';
 import { MDCSelectFoundation } from '@material/select';
@@ -47,8 +48,8 @@ export class MdcSelectedItem {
 export class MdcSelectItem {
   private disabled_: boolean = false;
 
-  @Input() id: string;
-  @Input() label: string;
+  @Input() value: string;
+  @Input() description: string;
   @Input()
   get disabled(): boolean {
     return this.disabled_;
@@ -73,11 +74,21 @@ export class MdcSelectItem {
 }
 
 @Directive({
-  selector: 'mdc-select-container',
+  selector: 'mdc-select-menu',
 })
-export class MdcSelectContainer {
+export class MdcSelectMenu {
   @HostBinding('class.mdc-simple-menu') isHostClass = true;
   @HostBinding('class.mdc-select__menu') isSelectClass = true;
+
+  constructor(public elementRef: ElementRef) { }
+}
+
+@Directive({
+  selector: 'mdc-select-items',
+})
+export class MdcSelectItems {
+  @HostBinding('class.mdc-list') isHostClass = true;
+  @HostBinding('class.mdc-simple-menu__items') isSelectClass = true;
 
   constructor(public elementRef: ElementRef) { }
 }
@@ -90,9 +101,11 @@ export class MdcSelectContainer {
   template:
   `
   <mdc-selected-item>{{placeholder}}</mdc-selected-item>
-  <mdc-select-container>
-    <ng-content></ng-content>
-  </mdc-select-container>
+  <mdc-select-menu>
+    <mdc-select-items>
+      <ng-content></ng-content>
+    </mdc-select-items>
+  </mdc-select-menu>
   `,
   providers: [
     MDC_SELECT_CONTROL_VALUE_ACCESSOR,
@@ -103,13 +116,13 @@ export class MdcSelect implements AfterViewInit, ControlValueAccessor, OnDestroy
   private open_: boolean = false;
   private placeholder_: string = '';
   private value_: string = '';
-  private _uniqueId: string = `mdc-select-${++nextUniqueId}`;
+  private uniqueId_: string = `mdc-select-${++nextUniqueId}`;
+  private menuFactory_: any;
   private controlValueAccessorChangeFn_: (value: any) => void = () => { };
   onTouched: () => any = () => { };
 
-
-  @Input() id: string = this._uniqueId;
-  get inputId(): string { return `${this.id || this._uniqueId}-input`; }
+  @Input() id: string = this.uniqueId_;
+  get inputId(): string { return `${this.id || this.uniqueId_}-input`; }
   @Input() name: string | null = null;
   @Input()
   get value(): string { return this.foundation_.getValue(); }
@@ -121,14 +134,20 @@ export class MdcSelect implements AfterViewInit, ControlValueAccessor, OnDestroy
   set placeholder(value: string) {
     this.placeholder_ = value;
   }
+  @Input()
+  get disabled(): boolean { return this.isDisabled(); }
+  set disabled(value: boolean) {
+    this.setDisabled(value);
+  }
   @Output('change') change_ = new EventEmitter<{ index: number, value: any }>();
   @HostBinding('class.mdc-select') isHostClass = true;
   @HostBinding('attr.role') role: string = 'listbox';
   @HostBinding('tabindex') tabIndex: number = 0;
-  @ContentChild(MdcSelectedItem) selectedItem: MdcSelectedItem;
-  @ContentChildren(MdcSelectItem) selectItems: QueryList<MdcSelectItem>;
-  @ViewChild(MdcSelectContainer) selectContainer: MdcSelectContainer;
-  
+  @ViewChild(MdcSelectedItem) selectedItem: MdcSelectedItem;
+  @ContentChildren(MdcSelectItem) options: QueryList<MdcSelectItem>;
+  @ViewChild(MdcSelectMenu) selectMenu: MdcSelectMenu;
+  @ViewChild(MdcSelectItems) selectItems: MdcSelectItems;
+
   private mdcAdapter_: MDCSelectAdapter = {
     addClass: (className: string) => {
       this.renderer_.addClass(this.elementRef.nativeElement, className);
@@ -161,47 +180,46 @@ export class MdcSelect implements AfterViewInit, ControlValueAccessor, OnDestroy
       this.renderer_.setProperty(this.elementRef.nativeElement, propertyName, value);
     },
     create2dRenderingContext: () => {
-      let canvas: HTMLElement;
-
       return this.renderer_.createElement('canvas').getContext('2d');
     },
     setMenuElStyle: (propertyName: string, value: string) => {
-      this.renderer_.setProperty(this.selectContainer.elementRef.nativeElement, propertyName, value);
+      this.renderer_.setProperty(this.selectMenu.elementRef.nativeElement, propertyName, value);
     },
     setMenuElAttr: (attr: string, value: string) => {
-      this.renderer_.setAttribute(this.selectContainer.elementRef.nativeElement, attr, value);
+      this.renderer_.setAttribute(this.selectMenu.elementRef.nativeElement, attr, value);
     },
     rmMenuElAttr: (attr: string) => {
-      this.renderer_.removeAttribute(this.selectContainer.elementRef.nativeElement, attr);
+      this.renderer_.removeAttribute(this.selectMenu.elementRef.nativeElement, attr);
     },
     getMenuElOffsetHeight: () => {
-      return this.elementRef.nativeElement.offsetHeight;
+      return this.selectMenu.elementRef.nativeElement.offsetHeight;
     },
     openMenu: (focusIndex: number) => {
+      this.menuFactory_.show({ focusIndex });
     },
-    isMenuOpen: () => {
-      return this.open_;
-    },
+    isMenuOpen: () => this.menuFactory_.open,
     setSelectedTextContent: (textContent: string) => {
-      this.selectedItem.elementRef.nativeElement.textContent = textContent;
+      // this.selectedItem.elementRef.nativeElement.textContent = textContent;
+      this.placeholder_ = textContent;
     },
     getNumberOfOptions: () => {
-      return this.selectItems ? this.selectItems.length : 0;
+      return this.options ? this.options.length : 0;
     },
     getTextForOptionAtIndex: (index: number) => {
-      return this.getItemByIndex(index).nativeElement.textContent;
+      return this.getItemByIndex(index).elementRef.nativeElement.textContent;
     },
     getValueForOptionAtIndex: (index: number) => {
-      return this.getItemByIndex(index).nativeElement.id || this.getItemByIndex(index).nativeElement.textContent;
+      return this.getItemByIndex(index).value || this.getItemByIndex(index).description;
+      // return this.getItemByIndex(index).nativeElement.id || this.getItemByIndex(index).nativeElement.textContent;
     },
     setAttrForOptionAtIndex: (index: number, attr: string, value: string) => {
-      this.renderer_.setAttribute(this.getItemByIndex(index).nativeElement, attr, value);
+      this.renderer_.setAttribute(this.getItemByIndex(index).elementRef.nativeElement, attr, value);
     },
     rmAttrForOptionAtIndex: (index: number, attr: string) => {
-      this.renderer_.removeAttribute(this.getItemByIndex(index).nativeElement, attr);
+      this.renderer_.removeAttribute(this.getItemByIndex(index).elementRef.nativeElement, attr);
     },
     getOffsetTopForOptionAtIndex: (index: number) => {
-      return this.getItemByIndex(index).nativeElement.offsetTop;
+      return this.getItemByIndex(index).elementRef.nativeElement.offsetTop;
     },
     registerMenuInteractionHandler: (type: string, handler: EventListener) => {
       this.registry_.listen_(this.renderer_, type, handler, this.elementRef);
@@ -237,6 +255,8 @@ export class MdcSelect implements AfterViewInit, ControlValueAccessor, OnDestroy
 
   ngAfterViewInit() {
     this.foundation_.init();
+    this.menuFactory_ = new MDCSimpleMenu(this.selectMenu.elementRef.nativeElement);
+    this.resize();
   }
 
   ngOnDestroy() {
@@ -283,7 +303,7 @@ export class MdcSelect implements AfterViewInit, ControlValueAccessor, OnDestroy
     this.elementRef.nativeElement.focus();
   }
 
-  private getItemByIndex(index: number): ElementRef | null {
-    return this.selectItems.toArray()[index].elementRef;
+  private getItemByIndex(index: number): MdcSelectItem | null {
+    return this.options.toArray()[index];
   }
 }

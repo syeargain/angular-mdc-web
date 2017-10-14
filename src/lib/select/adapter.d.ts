@@ -3,7 +3,7 @@ export interface MDCSelectAdapter {
   removeClass: (className: string) => void;
   setAttr: (attr: string, value: string) => void;
   rmAttr: (attr: string) => void;
-  computeBoundingRect: () => ClientRect;
+  computeBoundingRect: () => { left: number, top: number };
   registerInteractionHandler: (type: string, handler: EventListener) => void;
   deregisterInteractionHandler: (type: string, handler: EventListener) => void;
   focus: () => void;

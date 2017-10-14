@@ -92,11 +92,27 @@
       </tbody>
     </table>
   </div>
-
+</div>
+<div fxLayout="column" class="mdc-padding" fxLayoutAlign="start start" class="mdc-padding">
   <span mdc-typography-headline>Select Menu</span>
-  <mdc-select [placeholder]="'Favorite food'">
-    <mdc-select-item>Hamburger</mdc-select-item>
-    <mdc-select-item>Pizza</mdc-select-item>
-    <mdc-select-item>Tacos</mdc-select-item>
+  <mdc-form-field>
+    <mdc-checkbox [(ngModel)]="isDisabled"></mdc-checkbox>
+    <label>Disable</label>
+  </mdc-form-field>
+
+  <mdc-select [placeholder]="'Favorite food'" [(ngModel)]="selectedValue" name="food" [disabled]="isDisabled">
+    <mdc-select-item *ngFor="let food of foods" [value]="food.value">
+      {{food.description}}
+    </mdc-select-item>
   </mdc-select>
+
+
+  <span mdc-typography-headline>Testing</span>
+<!-- <pre style="background:#000;color:#f8f8f8"><span style="color:#89bdff">&lt;<span style="color:#89bdff">mdc</span><span style="color:#89bdff">-select</span> [<span style="color:#89bdff">placeholder</span>]=<span style="color:#65b042">"'Favorite food'"</span> [(<span style="color:#89bdff">ngModel</span>)]=<span style="color:#65b042">"myModel"</span> <span style="color:#89bdff">name</span>=<span style="color:#65b042">"food"</span> [<span style="color:#89bdff">disabled</span>]=<span style="color:#65b042">"false"</span>></span>
+  <span style="color:#89bdff">&lt;<span style="color:#89bdff">mdc</span><span style="color:#89bdff">-select-item</span> *<span style="color:#89bdff">ngFor</span>=<span style="color:#65b042">"let item of items"</span> [<span style="color:#89bdff">value</span>]=<span style="color:#65b042">"item.value"</span>></span>
+    {{item.description}}
+  <span style="color:#89bdff">&lt;/<span style="color:#89bdff">mdc</span><span style="color:#89bdff">-select-item</span>></span>
+<span style="color:#89bdff">&lt;/<span style="color:#89bdff">mdc</span><span style="color:#89bdff">-select</span>></span>
+</pre>
+ -->
 </div>
