@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MdcTextfieldInputDirective } from './textfield-input.directive';
 import {
   MdcTextfieldComponent,
+  MdcTextfieldBottomLine,
   MdcTextfieldHelptextDirective,
   MdcTextfieldLabelDirective,
 } from './textfield.component';
@@ -16,6 +17,7 @@ import { MdcTextareaComponent } from './textarea.component';
 
 const TEXTFIELD_COMPONENTS = [
   MdcTextfieldInputDirective,
+  MdcTextfieldBottomLine,
   MdcTextfieldHelptextDirective,
   MdcTextfieldLabelDirective,
   MdcTextfieldComponent,
