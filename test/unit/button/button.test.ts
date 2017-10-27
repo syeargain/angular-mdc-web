@@ -2,9 +2,9 @@ import { Component, DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { MdcButtonComponent, MdcIcon, MdcButtonModule } from '../../../src/lib/public_api';
+import { MdcButton, MdcIcon, MdcButtonModule } from '../../../src/lib/public_api';
 
-describe('MdcButtonComponent', () => {
+describe('MdcButton', () => {
   let fixture: ComponentFixture<any>;
 
   beforeEach(async(() => {
@@ -22,14 +22,14 @@ describe('MdcButtonComponent', () => {
   describe('button[mdc-button]', () => {
     let buttonDebugElement: DebugElement;
     let buttonNativeElement: HTMLButtonElement;
-    let buttonInstance: MdcButtonComponent;
+    let buttonInstance: MdcButton;
     let testComponent: SimpleButton;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(SimpleButton);
       fixture.detectChanges();
 
-      buttonDebugElement = fixture.debugElement.query(By.directive(MdcButtonComponent));
+      buttonDebugElement = fixture.debugElement.query(By.directive(MdcButton));
       buttonNativeElement = buttonDebugElement.nativeElement;
       buttonInstance = buttonDebugElement.componentInstance;
       testComponent = fixture.debugElement.componentInstance;
@@ -100,6 +100,29 @@ describe('MdcButtonComponent', () => {
       testComponent.isDisabled = true;
       fixture.detectChanges();
       expect(buttonNativeElement.disabled).toBeTruthy('Expected button to be disabled');
+    });
+
+    it('#ripple should be deactivated', () => {
+      buttonInstance.ripple.deactivate();
+      fixture.detectChanges();
+      expect(buttonDebugElement.nativeElement.classList.contains('mdc-ripple-surface')).toBe(false);
+    });
+
+    it('#ripple surface should be removed', () => {
+      buttonInstance.ripple.active = false;
+      fixture.detectChanges();
+      expect(buttonInstance.ripple.isSurfaceActive()).toBe(false);
+    });
+
+    it('#ripple should be disabled', () => {
+      buttonInstance.ripple.disabled = true;
+      fixture.detectChanges();
+      expect(buttonInstance.ripple.isSurfaceDisabled()).toBe(true);
+    });
+
+    it('#ripple should be updated', () => {
+      buttonInstance.ripple.layout();
+      fixture.detectChanges();
     });
   });
 

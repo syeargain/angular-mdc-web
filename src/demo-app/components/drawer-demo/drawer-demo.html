@@ -167,6 +167,18 @@
       </tbody>
       <thead>
         <tr>
+          <th>Properties</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>closeOnClick: boolean</td>
+          <td>If false, clicking on the drawer will not close it. (Default: true)</td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr>
           <th>Method</th>
           <th>Description</th>
         </tr>
@@ -389,7 +401,7 @@
         <mdc-toolbar>
             <mdc-toolbar-row>
                 <mdc-toolbar-section [alignStart]="true">
-                    <button mdc-toolbar-icon-menu material-icon (click)="handlePersistent();">menu</button>
+                    <button mdc-toolbar-menu-icon material-icon (click)="handlePersistent();">menu</button>
                     <span mdc-toolbar-title>App</span>
                 </mdc-toolbar-section>
                 <mdc-toolbar-section [alignEnd]="true">

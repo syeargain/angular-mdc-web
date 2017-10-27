@@ -7,6 +7,7 @@ import {
   MdcDrawerModule,
   MdcFabModule,
   MdcFormFieldModule,
+  MdcIconModule,
   MdcIconToggleModule,
   MdcLinearProgressModule,
   MdcListModule,
@@ -19,6 +20,7 @@ import {
   MdcTabModule,
   MdcTextfieldModule,
   MdcToolbarModule,
+  MdcSelectModule,
 // } from '@angular-mdc/web';
 } from '../lib/public_api';
 
@@ -34,6 +36,7 @@ import {
     MdcIconToggleModule,
     MdcLinearProgressModule,
     MdcListModule,
+    MdcIconModule,
     MdcCoreModule,
     MdcMenuModule,
     MdcRadioModule,
@@ -43,6 +46,7 @@ import {
     MdcTabModule,
     MdcTextfieldModule,
     MdcToolbarModule,
+    MdcSelectModule,
   ]
 })
 export class DemoMaterialModule { }

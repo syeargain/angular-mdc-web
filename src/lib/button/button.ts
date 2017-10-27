@@ -9,7 +9,7 @@ import {
   Renderer2,
   ViewEncapsulation
 } from '@angular/core';
-import { MdcIcon } from '../icon/icon.component';
+import { MdcIcon } from '../icon/icon';
 import { MdcRipple } from '../core/ripple/ripple.service';
 import {
   toBoolean,
@@ -19,22 +19,22 @@ import {
 
 @Component({
   selector: 'button[mdc-button], a[mdc-button]',
+  template: '<ng-content></ng-content>',
   host: {
     '[attr.aria-disabled]': 'disabled.toString()',
   },
-  template: '<ng-content></ng-content>',
-  providers: [MdcRipple]
+  providers: [MdcRipple],
 })
-export class MdcButtonComponent implements AfterViewInit {
+export class MdcButton implements AfterViewInit {
   private disabled_: boolean = false;
 
-  @Input() raised: boolean;
-  @Input() primary: boolean;
-  @Input() dense: boolean;
-  @Input() compact: boolean;
-  @Input() secondary: boolean;
-  @Input() unelevated: boolean;
-  @Input() stroked: boolean;
+  @Input() raised: boolean = false;
+  @Input() primary: boolean = false;
+  @Input() dense: boolean = false;
+  @Input() compact: boolean = false;
+  @Input() secondary: boolean = false;
+  @Input() unelevated: boolean = false;
+  @Input() stroked: boolean = false;
   @Input()
   get disabled(): boolean { return this.disabled_; }
   set disabled(value) {
@@ -89,13 +89,14 @@ export class MdcButtonComponent implements AfterViewInit {
   constructor(
     public renderer: Renderer2,
     public elementRef: ElementRef,
-    public ripple: MdcRipple) {
-    this.ripple.init();
-  }
+    public ripple: MdcRipple) { }
 
   ngAfterViewInit() {
     if (this.buttonIcon) {
       this.renderer.addClass(this.buttonIcon.elementRef.nativeElement, 'mdc-button__icon');
+    }
+    if (!this.disableRipple) {
+      this.ripple.init();
     }
   }
 

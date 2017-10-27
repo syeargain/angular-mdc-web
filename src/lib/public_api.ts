@@ -1,3 +1,4 @@
+export * from './module';
 export * from './core/index';
 export * from './button/index';
 export * from './card/index';
@@ -14,6 +15,7 @@ export * from './linear-progress/index';
 export * from './list/index';
 export * from './menu/index';
 export * from './radio/index';
+export * from './select/index';
 export * from './slider/index';
 export * from './snackbar/index';
 export * from './switch/index';
